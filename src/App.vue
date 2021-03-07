@@ -231,6 +231,7 @@ export default {
         this.subscribeToUpdates(ticker.name);
       });
     }
+    console.log(this.tickers);
   },
   computed: {
     filterCoinList() {
@@ -249,13 +250,13 @@ export default {
       const start = (this.page - 1) * countElements;
       const end = this.page * countElements;
 
-      this.hasNextPage = this.tickers.length > end;
+      const filterList = this.tickers.filter(ticker =>
+        ticker.name.includes(this.filter.toUpperCase())
+      );
 
-      const filteredList = this.tickers
-        .filter(item => item.name.includes(this.filter.toUpperCase()))
-        .slice(start, end);
+      this.hasNextPage = filterList.length > end;
 
-      return filteredList;
+      return filterList.slice(start, end);
     },
     autoAdd(itemAdd) {
       if (this.tickers.some(item => item.name === itemAdd)) {
